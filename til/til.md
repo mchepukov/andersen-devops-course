@@ -37,3 +37,15 @@ Got knowledge about:
 - Read information about creating HA K8S cluster on bare metal.
 - Got how to troubleshoot elasticseatch cluster when it held in red status.
 ```
+
+#### 05/06/2021
+
+```
+- Rest time - didn't learn new anything
+```
+
+#### 05/06/2021
+
+```
+- I've have read info about python and flask, how to use it to to do homework
+```
