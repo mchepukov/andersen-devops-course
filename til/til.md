@@ -49,3 +49,21 @@ Got knowledge about:
 ```
 - I've have read info about python and flask, how to use it to to do homework
 ```
+
+#### 06/06/2021
+
+```
+- How to use decorators in Python
+```
+
+#### 07/06/2021
+
+```
+- Learned how to validate JSON schema in Python
+```
+
+#### 08/06/2021
+
+```
+- Investigated gitlab issue when gitlab container registry not clear automatically by scheduling
+```
