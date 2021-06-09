@@ -67,3 +67,9 @@ Got knowledge about:
 ```
 - Investigated gitlab issue when gitlab container registry not clear automatically by scheduling
 ```
+
+#### 08/06/2021
+
+```
+- Investigating k8s balancing when Dacacenter failure
+```
