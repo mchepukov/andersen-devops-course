@@ -1,0 +1,15 @@
+<!doctype html>
+<title>Hello from Flask</title>
+<pre>
+Unfortunately something get wrong.
+
+Try to run next command from you terminal to check:
+
+curl -XPOST -d'{"animal":"cow", "sound":"moooo", "count": 3}' {{request.host_url}}
+
+</pre>
+{% block body %}
+  <h1>Page Not Found</h1>
+  <p>What you were looking for is just not there.
+  <p><a href="{{ url_for('index') }}">Go to main page</a>
+{% endblock %}
