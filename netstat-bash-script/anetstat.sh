@@ -46,7 +46,7 @@ check_sudo() {
         echo -e "${RED}Please run this script with sudo${ENDCOLOR}"
         echo -e "Without sudo it will not give all information"
         echo -e "Example:"
-        echo -e "${GREEN}sudo $(basename "${BASH_SOURCE[0]}") ${ARGS}${ENDCOLOR}"
+        echo -e "${GREEN}sudo $(basename "${BASH_SOURCE[0]}") ${ARGS[0]} ${ENDCOLOR}"
     fi
 }
 
@@ -74,19 +74,20 @@ check_os() {
     unameOut="$(uname -s)"
     case "${unameOut}" in
         Linux*)     true;; #Nothing to do - Linux it's exactly what we need
-        Darwin*)    echo -e "This program correctly run only under Linux, your OS is "${unameOut}""
+        Darwin*)    echo -e "This program correctly run only under Linux, your OS is ${unameOut}"
                     exit 1
                     ;;
-        *)          echo -e "This program correctly run only under Linux, your OS is "${unameOut}""
+        *)          echo -e "This program correctly run only under Linux, your OS is ${unameOut}"
                     exit 1
     esac
 }
 
 get_ip_list(){
     local PID_PNAME="$1"
+    local FULL_IP_LIST
 
     ALL_CONNECTIONS="$(`echo $NETSTAT_LINUX_COMMAND`)"
-    local FULL_IP_LIST="$(echo "$ALL_CONNECTIONS" | grep $STATE | awk '/'"$PID_PNAME"/' {print $5}' | cut -d: -f1 )"
+    FULL_IP_LIST="$(echo "$ALL_CONNECTIONS" | grep $STATE | awk '/'"$PID_PNAME"/' {print $5}' | cut -d: -f1 )"
 
     if [ -z "${FULL_IP_LIST}" ]; then
         echo -e "${RED}Coul'd not find any connections with this parameters. Please check it.${ENDCOLOR}"
@@ -96,12 +97,15 @@ get_ip_list(){
 }
 
 check_whois_by_ip() {
-  
+    local IP
+    local CONN_COUNT
+    local ORG_NAME
+
     while IFS= read -r line
     do
-        local IP=$(echo $line | awk '{print $2}');
-        local CONN_COUNT=$(echo $line | awk '{print $1}');
-        local ORG_NAME=$(whois $IP | awk -F':' '/'"$GET_INFO"/' {print $2}');
+        IP=$(echo $line | awk '{print $2}');
+        CONN_COUNT=$(echo $line | awk '{print $1}');
+        ORG_NAME=$(whois $IP | awk -F':' '/'"$GET_INFO"/' {print $2}');
 
         echo -e "$CONN_COUNT" ":" "$IP" ":" $ORG_NAME
         
@@ -118,10 +122,10 @@ while getopts p:n:c:r:s: flag
 do
     case "${flag}" in
         p) PID=${OPTARG};;
-        n) PNAME=$(echo ${OPTARG} | tr [[:upper:]] [[:lower:]]);;
+        n) PNAME=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]');;
         c) COUNT_LINES=${OPTARG};;
         r) GET_INFO=${OPTARG};;
-        s) STATE=$(echo ${OPTARG} | tr [[:lower:]] [[:upper:]]);;
+        s) STATE=$(echo "${OPTARG}" | tr '[:lower:]' '[:upper:]');;
         *) echo "Exit without parameters. Please see example of usage"
            exit 0
            ;;
@@ -144,12 +148,12 @@ echo -e "Get the next info from whois by regexp: ${GREEN}${GET_INFO}${ENDCOLOR}"
 echo -e "Output lines limit is: ${GREEN}${COUNT_LINES}${ENDCOLOR}"
 echo -e "State connection is: ${GREEN}${STATE}${ENDCOLOR}"
 
-if [[ ! -z "${PID}" ]]; then
+if [[ -n "${PID}" ]]; then
     echo -e "Information for process with PID: ${GREEN}${PID}${ENDCOLOR}"
-    get_ip_list $PID
-elif [[ ! -z "${PNAME}" ]]; then
+    get_ip_list "$PID"
+elif [[ -n "${PNAME}" ]]; then
     echo -e "Information for process name: ${GREEN}${PNAME}${ENDCOLOR}"
-    get_ip_list $PNAME
+    get_ip_list "$PNAME"
 else
     echo -e "${RED}Plese give PID or Name to get info${ENDCOLOR}"
     exit 0;

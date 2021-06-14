@@ -13,11 +13,11 @@ Full description of task [here](hw-task.md)
 Syntax:
 
 ```bash
-nstat.sh [-p PID] - get information by process pid
-nstat.sh [-n NAME] - get information by process name
-nstat.sh [-c NUMBER] - limit output information
-nstat.sh [-s STATE] - show only with this state
-nstat.sh [-r GET_INFO] - get this info from whois"
+anetstat.sh [-p PID] - get information by process pid
+anetstat.sh [-n NAME] - get information by process name
+anetstat.sh [-c NUMBER] - limit output information
+anetstat.sh [-s STATE] - show only with this state
+anetstat.sh [-r GET_INFO] - get this info from whois"
 ```
 
 Usage:
@@ -25,7 +25,7 @@ Usage:
 For example to get information about *Organization* with process with name *firefox* and limit onput to 6 line and state is established:
 
 ```bash
-sudo ./netstat.sh -n firefox -r Organization -c 6 -s established
+sudo ./anetstat.sh -n firefox -r Organization -c 6 -s established
 ```
 
 Output example:
