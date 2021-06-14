@@ -34,7 +34,7 @@ show_usage_info() {
     echo "$(basename "${BASH_SOURCE[0]}") [-r GET_INFO] - get this info from whois"
     echo 
     echo -e "${GREEN}Usage example:${ENDCOLOR}"
-    echo -e "${GREEN}Get info about PostalCode for process with name firefox and limit output to 6 line${ENDCOLOR}"
+    echo -e "${GREEN}Get info about Organization for process with name firefox and limit output to 6 line${ENDCOLOR}"
     echo -e "${GREEN}sudo ${BASH_SOURCE[0]} -n firefox -r Organization -c 6 -s established${ENDCOLOR}"
     echo
 
