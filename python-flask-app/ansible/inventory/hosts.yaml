@@ -1,0 +1,7 @@
+---
+all:
+  hosts:
+    debian:
+      ansible_host: 192.168.1.68
+      # ip: 192.168.1.68
+      # access_ip: 192.168.1.68

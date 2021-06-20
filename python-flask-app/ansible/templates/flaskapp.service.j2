@@ -1,0 +1,13 @@
+[Unit]
+Description=Animals Flask application
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory={{ installation_dir }}
+Environment=FLASK_ENV=development
+ExecStart={{ installation_dir }}/venv/bin/python -m flask run --host=0.0.0.0 --port=443 --cert=ssl/cert.pem --key=ssl/key.pem
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
