@@ -68,8 +68,20 @@ Got knowledge about:
 - Investigated gitlab issue when gitlab container registry not clear automatically by scheduling
 ```
 
-#### 08/06/2021
+#### 10/06/2021
 
 ```
 - Investigating k8s balancing when Dacacenter failure
+```
+
+#### 18/06/2021
+
+```
+- Investigating high sys cpu usage on k8s cluster
+```
+
+#### 19/06/2021
+
+```
+- Learn how to deploy application on flask via ansible
 ```

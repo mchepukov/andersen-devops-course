@@ -1,0 +1,2 @@
+apply_firewall_rules: False
+installation_dir: "/opt/flaskapp"
