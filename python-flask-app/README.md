@@ -13,8 +13,8 @@ Basic tasks that need implement:
   - [x] Create different errors for curl or browser requests
   - [x] Add support https (443)
   - [x] Add support emoji functionality
-  - [ ] Add interesting output when serving /
-  - [ ] Review and rewrite code finally
+  - [x] Add interesting output when serving /
+  - [x] Review and rewrite code finally
 - [x] Create service to run application
 - [x] Add ansible role to deploy application
   - [x] Create iptables rules to allow only 22,80,433 ports

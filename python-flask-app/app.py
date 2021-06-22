@@ -11,7 +11,7 @@ from jsonschema import validate
 # you need just copy and paste emoji from site https://emojipedia.org/nature/
 # and paste in text file
 #
-# not good solution but it's works
+# Not good solution but it's works
 
 path_to_emoji_file = "emoji_lib.txt"
 
@@ -33,9 +33,13 @@ CURL_400_ERROR_MESSAGE = '''Error 400 - Bad Request.\n\n
 Please try to run command in terminal as in example below:
 curl -XPOST -d'{{"animal":"cow", "sound":"moooo", "count": 3}}' {host_url}'''
 
-GREETING_MESSAGE = '''MAIN PAGE'''
-
-####
+GREETING_MESSAGE = '''
+  /\_/\  (
+ ( ^.^ ) _)
+   \"/  (
+ ( | | )
+(__d b__)
+'''
 
 # JSON schema for validating input data from POST request
 # it's necessary because we can expect what incoming data may be not valid
@@ -80,7 +84,9 @@ def index():
             app.logger.info("Given JSON data is InValid")
             return handle_bad_request("Given JSON data is InValid")
             # TODO Change str to err
-    return GREETING_MESSAGE + "\n"
+    if "curl" in request.user_agent.string:
+        return GREETING_MESSAGE + "\n"
+    return render_template('main.html'), 200
 
 
 @app.errorhandler(404)
