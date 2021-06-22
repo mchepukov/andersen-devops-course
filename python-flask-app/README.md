@@ -13,8 +13,8 @@ Basic tasks that need implement:
   - [x] Create different errors for curl or browser requests
   - [x] Add support https (443)
   - [x] Add support emoji functionality
-  - [ ] Add interesting output when serving /
-  - [ ] Review and rewrite code finally
+  - [x] Add interesting output when serving /
+  - [x] Review and rewrite code finally
 - [x] Create service to run application
 - [x] Add ansible role to deploy application
   - [x] Create iptables rules to allow only 22,80,433 ports
@@ -27,7 +27,7 @@ Basic tasks that need implement:
 
 This application should do exactly as described in task [here](docs/ansible_assignment.md)
 
-At 20 Jan it's response only at 443 port with certificates, if you use ```curl``` for checking,
+It's response only at 443 port with certificates, if you use ```curl``` for checking,
 please add ```-k``` for ```curl``` without, it you will get next error:
 ```curl: (60) SSL certificate problem: self signed certificate```
 
@@ -81,6 +81,18 @@ debian | SUCCESS => {
     "changed": false,
     "ping": "pong"
 }
+```
+
+### Check and change ansible script parameters if you need it
+
+- **apply_firewall_rules** - if set *True* then apply firewall rules if *False* - than no
+- **installation_dir** - your can change installation directory of app
+
+```shell
+vim inventory/group_vars/all.yaml
+
+# apply_firewall_rules: True
+# installation_dir: "/opt/flaskapp"
 ```
 
 ### Executing deployment script
