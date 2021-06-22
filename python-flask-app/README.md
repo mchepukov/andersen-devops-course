@@ -1,13 +1,13 @@
 # Homework
 
-## Need to write python flask app
+## Need to write flask app
 
 The description of the homework is at the following link -
 [home task](docs/ansible_assignment.md)
 
 Basic tasks that need implement:
 
-- [x] Create basic functionaly of application
+- [x] Create basic functionality of application
   - [x] Add request JSON validation
   - [x] Override processing errors 404 and 403
   - [x] Create different errors for curl or browser requests
@@ -21,7 +21,7 @@ Basic tasks that need implement:
   - [x] Generate certificate for application
   - [x] Add service to autostart
   - [x] Add supporting ansible vault
-- [ ] Write instructions how to deploy application on target system
+- [x] Write instructions how to deploy application on target system
 
 ## Description
 
@@ -31,7 +31,7 @@ At 20 Jan it's response only at 443 port with certificates, if you use ```curl``
 please add ```-k``` for ```curl``` without, it you will get next error:
 ```curl: (60) SSL certificate problem: self signed certificate```
 
-Example of request with self signed certificate:
+Example of request with self-signed certificate:
 ```shell
 curl -k -XPOST -d'{"animal":"shark", "sound":"dododo", "count": 3}' https://debian-host
 
@@ -43,19 +43,31 @@ curl -k -XPOST -d'{"animal":"shark", "sound":"dododo", "count": 3}' https://debi
 Made with ❤️ by Maxim Chepukov
 ```
 
-## Deployment
+## Preparation for deployment
+
+### Check the ansible version on your system
+This script is working and tested on macOS BigSur 11.14 with ansible 2.9.20 (python version = 3.9.5)
+
+It might work with any system that can run ansible.
+I't not tested with ansible version 4
+
+You can check your ansible version with command ```ansible --version```
+
+You must have already copied your ssh key to the target system if not please add
 
 ### Add your ssh key to target host
 
 ```shell
-export TARGET_HOST=192.168.1.68
-ssh-copy-id -i ~/.ssh/id_rsa $TARGET_HOST
+# Copy ssh key to remote server, please insert your ip address in command below
+ssh-copy-id -i ~/.ssh/id_rsa 192.168.1.68
 ```
 
 ### Check possibility to connection to debian host
 
 ```shell
-cd andsible
+# Clone full repo and go to the project python-flask-app in directory with ansible role
+git clone https://github.com/mchepukov/andersen-devops-course.git
+cd andersen-devops-course/python-flask-app/ansible/
 ansible -i inventory/hosts.yaml all -m ping
 ```
 
@@ -77,4 +89,18 @@ debian | SUCCESS => {
 ansible-playbook -i inventory/hosts.yaml main.yaml --ask-vault-pass
 # Enter vault pass: 12345
 ```
+
+After deployment complete - please check that's all working by command
+
+```shell
+# Use -k option to connect to server with self-signed certificate anyway
+curl -k -XPOST -d'{"animal":"shark", "sound":"dododo", "count": 3}' https://debian-host
+```
+
+### Additional info
+
+This script works only on 443 port with self-signed certificate. It can be run on both ports 80 and 443 if we will be using
+nginx or something else as proxy server between client and flask application - but not at this time.
+I strongly recommended do it in production ready deployment.
+
 
