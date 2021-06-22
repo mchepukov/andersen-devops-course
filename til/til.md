@@ -85,3 +85,14 @@ Got knowledge about:
 ```
 - Learn how to deploy application on flask via ansible
 ```
+
+#### 21/06/2021
+
+```
+- Learn how to connect Kubernetes clusters located in different data centres
+```
+
+#### 22/06/2021
+
+```
+- Learn how to monitoring and troubleshooting etcd cluster
