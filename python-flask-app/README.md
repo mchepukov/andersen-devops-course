@@ -5,23 +5,23 @@
 The description of the homework is at the following link -
 [home task](docs/ansible_assignment.md)
 
-Basic tasks that need implement:
+Basic tasks that need to implement:
 
-- [x] Create basic functionality of application
+- [x] Create basic functionality of the application
   - [x] Add request JSON validation
   - [x] Override processing errors 404 and 403
   - [x] Create different errors for curl or browser requests
-  - [x] Add support https (443)
+  - [x] Add support HTTPS (443)
   - [x] Add support emoji functionality
   - [x] Add interesting output when serving /
   - [x] Review and rewrite code finally
-- [x] Create service to run application
-- [x] Add ansible role to deploy application
+- [x] Create service to run the application
+- [x] Add Ansible role to deploy application
   - [x] Create iptables rules to allow only 22,80,433 ports
   - [x] Generate certificate for application
   - [x] Add service to autostart
-  - [x] Add supporting ansible vault
-- [x] Write instructions how to deploy application on target system
+  - [x] Add supporting Ansible vault
+- [x] Write instructions how to deploy application on the target system
 
 ## Description
 
@@ -46,12 +46,12 @@ Made with ❤️ by Maxim Chepukov
 ## Preparation for deployment
 
 ### Check the ansible version on your system
-This script is working and tested on macOS BigSur 11.14 with ansible 2.9.20 (python version = 3.9.5)
+This script is working and tested on macOS BigSur 11.14 with Ansible 2.9.20 (python version = 3.9.5)
 
-It might work with any system that can run ansible.
-I't not tested with ansible version 4
+It might work with any system that can run Ansible.
+It's not tested with Ansible version 4
 
-You can check your ansible version with command ```ansible --version```
+You can check your Ansible version with the command ```ansible --version```
 
 You must have already copied your ssh key to the target system if not please add
 
@@ -83,7 +83,7 @@ debian | SUCCESS => {
 }
 ```
 
-### Check and change ansible script parameters if you need it
+### Check and change Ansible script parameters if you need it
 
 - **apply_firewall_rules** - if set *True* then apply firewall rules if *False* - than no
 - **installation_dir** - your can change installation directory of app
@@ -112,7 +112,7 @@ curl -k -XPOST -d'{"animal":"shark", "sound":"dododo", "count": 3}' https://debi
 ### Additional info
 
 This script works only on 443 port with self-signed certificate. It can be run on both ports 80 and 443 if we will be using
-nginx or something else as proxy server between client and flask application - but not at this time.
+nginx or something else as a proxy server between client and flask application - but not at this time.
 I strongly recommended do it in production ready deployment.
 
 
