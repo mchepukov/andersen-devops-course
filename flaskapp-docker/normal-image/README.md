@@ -10,7 +10,7 @@ docker build -t flaskapp-normal .
 ## Run application
 
 ```shell
-docker run -p 80:5000 flaskappp-normal
+docker run -p 80:5000 flaskapp-normal
 ```
 
 ## Check running application
