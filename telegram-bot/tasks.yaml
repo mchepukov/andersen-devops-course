@@ -1,0 +1,22 @@
+---
+tasks:
+  task1:
+    name: "flaskapp-python"
+    progress: "done"
+    url: "https://github.com/mchepukov/andersen-devops-course/tree/main/python-flask-app"
+  task2:
+    name: flaskapp-docker
+    progress: done
+    url: https://github.com/mchepukov/andersen-devops-course/tree/main/flaskapp-docker
+  task3:
+    name: bash-script
+    progress: done
+    url: https://github.com/mchepukov/andersen-devops-course/tree/main/netstat-bash-script
+  task4:
+    name: bash-script1
+    progress: done
+    url: https://github.com/mchepukov/andersen-devops-course/tree/main/netstat-bash-script
+  task5:
+    name: bash-script5
+    progress: done
+    url: https://github.com/mchepukov/andersen-devops-course/tree/main/netstat-bash-script
