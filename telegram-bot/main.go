@@ -1,56 +1,114 @@
 package main
 
 import (
-	"github.com/go-telegram-bot-api/telegram-bot-api"
-	"github.com/joho/godotenv"
+	"fmt"
+	"github.com/fsnotify/fsnotify"
+	"github.com/spf13/viper"
+	tb "gopkg.in/tucnak/telebot.v2"
 	"log"
-	"os"
+	"strconv"
+
+	//"os"
+	"time"
 )
+
+type Configurations struct {
+	TELEGRAM_API_TOKEN string
+	GITHUB_REPO        string
+}
 
 func main() {
 
-	err := godotenv.Load("credentials.env")
+	var configuration Configurations
+
+	configViper := viper.New()
+	tasksViper := viper.New()
+
+	configViper.SetConfigName("config")
+	configViper.SetConfigType("yaml")
+	configViper.AddConfigPath(".")
+
+	tasksViper.SetConfigName("tasks")
+	tasksViper.SetConfigType("yaml")
+	tasksViper.AddConfigPath(".")
+
+	tasksViper.AutomaticEnv()
+
+	err := configViper.ReadInConfig()
+	if err != nil { // Handle errors reading the config file
+		panic(fmt.Errorf("Fatal error config file: %w \n", err))
+	}
+
+	err = tasksViper.ReadInConfig()
+	if err != nil { // Handle errors reading the config file
+		panic(fmt.Errorf("Fatal error config file: %w \n", err))
+	}
+
+	tasksViper.WatchConfig()
+	tasksViper.OnConfigChange(func(e fsnotify.Event) {
+		fmt.Println("Config file changed:", e.Name)
+	})
+
+	err = configViper.Unmarshal(&configuration)
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		fmt.Printf("Unable to decode into struct, %v", err)
 	}
 
-	TelegramApiToken, ok := os.LookupEnv("TELEGRAM_API_TOKEN")
-	if !ok {
-		log.Fatal("TELEGRAM_API_TOKEN is not present in credentials.env")
-	}
+	// Start Telegram Bot
+	TelegramApiToken := configuration.TELEGRAM_API_TOKEN
 
-	bot, err := tgbotapi.NewBotAPI(TelegramApiToken)
-	if err != nil {
-		log.Panic(err)
-	}
+	b, err := tb.NewBot(tb.Settings{
+		URL:    "",
+		Token:  TelegramApiToken,
+		Poller: &tb.LongPoller{Timeout: 10 * time.Second},
+	})
 
-	bot.Debug = true
-
-	log.Printf("Authorized on account %s", bot.Self.UserName)
-
-	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 60
-
-	updates, err := bot.GetUpdatesChan(u)
+	fmt.Println("Telegram BOT started...")
 
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
+		return
 	}
 
-	for update := range updates {
-		if update.Message == nil { // ignore any non-Message Updates
-			continue
+	b.Handle("/git", func(m *tb.Message) {
+		b.Send(m.Sender, configuration.GITHUB_REPO)
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	b.Handle("/tasks", func(m *tb.Message) {
+
+		var message string
+		countOfTasks := len(tasksViper.GetStringMapStringSlice("tasks"))
+		for i := 1; i <= countOfTasks; i++ {
+			task := tasksViper.GetStringMapString(fmt.Sprintf("tasks.task%d", i))
+
+			message += fmt.Sprintf("Task %d: [%s](%s)\n", i, task["name"], task["url"])
+
 		}
 
-		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+		b.Send(m.Sender, message, tb.NoPreview, tb.ParseMode(tb.ModeMarkdown))
 
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
-		msg.ReplyToMessageID = update.Message.MessageID
+	})
 
-		_, err := bot.Send(msg)
-		if err != nil {
-			log.Panic(err)
-		}
+	if err != nil {
+		log.Println(err)
 	}
+
+	b.Handle("/task", func(m *tb.Message) {
+
+		var message string
+
+		taskId, _ := strconv.Atoi(m.Payload)
+		task := tasksViper.GetStringMapString(fmt.Sprintf("tasks.task%d", taskId))
+		message = fmt.Sprintf(task["url"])
+
+		b.Send(m.Sender, message, tb.NoPreview, tb.ParseMode(tb.ModeMarkdown))
+
+	})
+
+	b.Start()
 
 }
