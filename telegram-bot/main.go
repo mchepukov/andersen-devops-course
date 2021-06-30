@@ -17,6 +17,12 @@ type Configurations struct {
 	GITHUB_REPO        string
 }
 
+var (
+	helpMessage = "1. /git - show my git repo\n" +
+		"2. /tasks - show my completed tasks\n" +
+		"3. /task # - where # is number of task, show of to directory\n"
+)
+
 func main() {
 
 	var configuration Configurations
@@ -107,6 +113,21 @@ func main() {
 
 		b.Send(m.Sender, message, tb.NoPreview, tb.ParseMode(tb.ModeMarkdown))
 
+	})
+
+	b.Handle("/start", func(m *tb.Message) {
+		if !m.Private() {
+			return
+		}
+		b.Send(m.Sender, helpMessage)
+	})
+
+	b.Handle("/help", func(m *tb.Message) {
+		if !m.Private() {
+			return
+		}
+
+		b.Send(m.Sender, helpMessage)
 	})
 
 	b.Start()
